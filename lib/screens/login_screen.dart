@@ -1,4 +1,4 @@
-import 'package:avinutri/screens/admin_signup.dart';
+import 'package:avinutri/screens/main_page.dart';
 import 'package:avinutri/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 reButton(context, true, (){}),
                 reButton(context, false, (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AdminSignUpScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MainPage()));
                 }),
                
               ],
