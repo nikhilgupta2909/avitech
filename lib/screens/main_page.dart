@@ -1,4 +1,5 @@
 import 'package:avinutri/screens/login_screen.dart';
+import 'package:avinutri/screens/visitor_registration_screen.dart';
 import 'package:flutter/material.dart';
 //This package is used for formatting the date
 // import 'package:intl/intl.dart';
@@ -59,7 +60,7 @@ class _MainPage extends State<MainPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const LoginScreen()));
+                          builder: (context) => const VisitorRegistration()));
                 },
                 style: const ButtonStyle(
                   padding: MaterialStatePropertyAll(
