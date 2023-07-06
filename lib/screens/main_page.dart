@@ -1,4 +1,5 @@
 import 'package:avinutri/screens/login_screen.dart';
+
 import 'package:avinutri/screens/visitor_registration_screen.dart';
 import 'package:flutter/material.dart';
 //This package is used for formatting the date
@@ -42,6 +43,9 @@ class _MainPage extends State<MainPage> {
                   );
                 },
                 style: const ButtonStyle(
+                  padding: MaterialStatePropertyAll(
+                    EdgeInsets.all(15.0),
+                  ),
                   backgroundColor: MaterialStatePropertyAll(Colors.white),
                   shape: MaterialStatePropertyAll(
                     StadiumBorder(side: BorderSide.none),
