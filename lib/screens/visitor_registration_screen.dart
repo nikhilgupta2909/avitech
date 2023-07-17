@@ -88,6 +88,8 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
       // _selectedDepartment = null;
       nameController.clear();
       contactNoController.clear();
+      reasonController.clear();
+      image = null;
     });
   }
 
@@ -108,238 +110,243 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+        
         body: Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white,
-                  Colors.purple,
-                ],
+          child: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white,
+                    Colors.purple,
+                  ],
+                ),
               ),
-            ),
-            child: Form(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 1.0,
-                      top: 15.0,
-                    ),
-                    child: ClipOval(
-                      child: image != null
-                          ? Image.file(image!,
-                              width: 150, height: 150, fit: BoxFit.cover)
-                          : Image.network(
-                              'https://img.freepik.com/free-photo/abstract-luxury-blur-grey-color-gradient-used-as-background-studio-wall-display-your-products_1258-52609.jpg',
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.fill),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      pickImage(ImageSource.camera);
-                    },
-                    child: const Text(
-                      "Add Photo",
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 50.0,
-                  ),
-                  TextFormField(
-                    controller: nameController,
-                    autovalidateMode: AutovalidateMode.always,
-                    validator: (value) => value == null
-                        ? 'Please Enter the name'
-                        : (value.contains(nameRegExp)
-                            ? null
-                            : 'Enter a Valid Name'),
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 15.0),
-                      labelText: "Name",
-                      fillColor: Colors.white.withOpacity(0.6),
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+              child: Form(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 1.0,
+                        top: 15.0,
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                      child: ClipOval(
+                        child: image != null
+                            ? Image.file(image!,
+                                width: 150, height: 150, fit: BoxFit.cover)
+                            : Image.network(
+                                'https://img.freepik.com/free-photo/abstract-luxury-blur-grey-color-gradient-used-as-background-studio-wall-display-your-products_1258-52609.jpg',
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.fill),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.always,
-                    validator: (value) => value == null
-                        ? 'Please enter the Contact No'
-                        : value.length > 10
-                            ? 'Contact no should only contain 10 digits'
-                            : null,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 15.0),
-                      labelText: "Contact No",
-                      fillColor: Colors.white.withOpacity(0.6),
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        pickImage(ImageSource.camera);
+                      },
+                      child: const Text(
+                        "Add Photo",
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  TextFormField(
-                    controller: reasonController,
-                    autovalidateMode: AutovalidateMode.always,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 15.0),
-                      labelText: "Reason",
-                      fillColor: Colors.white.withOpacity(0.6),
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
+                    const SizedBox(
+                      height: 50.0,
                     ),
-                  ),
-                  Padding(
-                    // padding: EdgeInsets.only(left: 15.0, top: 25.0),
-                    padding: const EdgeInsets.all(0.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 50.0,
-                          width: MediaQuery.of(context).size.width * 1.15,
-                          margin: EdgeInsets.only(top: 10.0),
-                          padding: EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black,
-                            ),
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              isExpanded: true,
-                              isDense: true,
-                              hint: const Text("Select Department"),
-                              menuMaxHeight: 150.0,
-                              // itemHeight: 50.0,
-                              // value: selectedDepartment,
-                              value: _selectDepartment,
-                              dropdownColor: Colors.white,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.0,
-                              ),
-                              items: _departments
-                                  .map(
-                                    (e) => DropdownMenuItem(
-                                      value: e,
-                                      child: Text(e.toString()),
-                                    ),
-                                  )
-                                  .toList(),
-                              // value: 'Select Department ',
-                              onChanged: (val) {
-                                setState(
-                                  () {
-                                    _person = [];
-                                    personDropdown(Department[val]);
-                                    _selectDepartment = val! as String;
-                                  },
-                                );
-                              },
-                            ),
-                          ),
+                    TextFormField(
+                      controller: nameController,
+                      autovalidateMode: AutovalidateMode.always,
+                      validator: (value) => value == null
+                          ? 'Please Enter the name'
+                          : (value.contains(nameRegExp)
+                              ? null
+                              : 'Enter a Valid Name'),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 15.0),
+                        labelText: "Name",
+                        fillColor: Colors.white.withOpacity(0.6),
+                        filled: true,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
                         ),
-                        Container(
-                          height: 50.0,
-                          width: MediaQuery.of(context).size.width * 1.15,
-                          margin: const EdgeInsets.only(top: 10.0),
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black,
-                            ),
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              hint: const Text("Select Person "),
-                              isExpanded: true,
-                              isDense: true,
-                              // value: selectedDepartment,
-                              value: _selectPerson,
-                              dropdownColor: Colors.white,
-                              style: const TextStyle(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    TextFormField(
+                      autovalidateMode: AutovalidateMode.always,
+                      controller: contactNoController,
+                      validator: (value) => value == null
+                          ? 'Please enter the Contact No'
+                          : value.length > 10
+                              ? 'Contact no should only contain 10 digits'
+                              : null,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 15.0),
+                        labelText: "Contact No",
+                        fillColor: Colors.white.withOpacity(0.6),
+                        filled: true,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      controller: reasonController,
+                      autovalidateMode: AutovalidateMode.always,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 15.0),
+                        labelText: "Reason",
+                        fillColor: Colors.white.withOpacity(0.6),
+                        filled: true,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      // padding: EdgeInsets.only(left: 15.0, top: 25.0),
+                      padding: const EdgeInsets.all(0.0),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 50.0,
+                            width: MediaQuery.of(context).size.width * 1.15,
+                            margin: EdgeInsets.only(top: 10.0),
+                            padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
                                 color: Colors.black,
-                                fontSize: 16.0,
                               ),
-                              items: _person
-                                  .map(
-                                    (e) => DropdownMenuItem(
-                                      value: e,
-                                      child: Text(e.toString()),
-                                    ),
-                                  )
-                                  .toList(),
-                              // value: 'Select Department ',
-                              onChanged: (val) {
-                                setState(
-                                  () {
-                                    print(Department[val]);
-                                    _selectPerson = val! as String;
-                                  },
-                                );
-                              },
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                isExpanded: true,
+                                isDense: true,
+                                hint: const Text("Select Department"),
+                                menuMaxHeight: 150.0,
+                                // itemHeight: 50.0,
+                                // value: selectedDepartment,
+                                value: _selectDepartment,
+                                dropdownColor: Colors.white,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                ),
+                                items: _departments
+                                    .map(
+                                      (e) => DropdownMenuItem(
+                                        value: e,
+                                        child: Text(e.toString()),
+                                      ),
+                                    )
+                                    .toList(),
+                                // value: 'Select Department ',
+                                onChanged: (val) {
+                                  setState(
+                                    () {
+                                      _person = [];
+                                      personDropdown(Department[val]);
+                                      _selectDepartment = val! as String;
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                           ),
+                          Container(
+                            height: 50.0,
+                            width: MediaQuery.of(context).size.width * 1.15,
+                            margin: const EdgeInsets.only(top: 10.0),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                hint: const Text("Select Person "),
+                                isExpanded: true,
+                                isDense: true,
+                                // value: selectedDepartment,
+                                value: _selectPerson,
+                                dropdownColor: Colors.white,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                ),
+                                items: _person
+                                    .map(
+                                      (e) => DropdownMenuItem(
+                                        value: e,
+                                        child: Text(e.toString()),
+                                      ),
+                                    )
+                                    .toList(),
+                                // value: 'Select Department ',
+                                onChanged: (val) {
+                                  setState(
+                                    () {
+                                      print(Department[val]);
+                                      _selectPerson = val! as String;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 50.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            addData();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Data Saved Succesfully..."),
+                              ),
+                            );
+                          },
+                          child: Text("Save Data"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            clearText();
+                          },
+                          child: Text("Reset Data"),
                         ),
                       ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 50.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          addData();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Data Saved Succesfully..."),
-                            ),
-                          );
-                        },
-                        child: Text("Save Data"),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          clearText();
-                        },
-                        child: Text("Reset Data"),
-                      ),
-                    ],
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
