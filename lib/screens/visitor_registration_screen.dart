@@ -1,9 +1,14 @@
 // import 'package:avinutri/widgets/reusable_widgets.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:snippet_coder_utils/FormHelper.dart';
 
 class VisitorRegistration extends StatefulWidget {
@@ -17,11 +22,60 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
   var name = "";
   var contactNo = "";
 
+  final formKey = GlobalKey<FormState>();
+
   static final RegExp nameRegExp = RegExp('[a-zA-Z]');
 
   final nameController = TextEditingController();
   final contactNoController = TextEditingController();
   final reasonController = TextEditingController();
+
+   _createPdf() async {
+    final pdf = pw.Document();
+    var nameText = nameController.text;
+    var contactText = contactNoController.text;
+    var reasonText = reasonController.text;
+    final image =
+        (await rootBundle.load('assets/images/logo.png')).buffer.asUint8List();
+    pdf.addPage(
+      pw.Page(
+          build: (pw.Context context) {
+            return pw.Center(
+              child: pw.Column(
+                  // mainAxisAlignment: pw.MainAxisAlignment.start,
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Image(
+                      pw.MemoryImage(image),
+                      width: MediaQuery.of(this.context).size.width,
+                      alignment: pw.Alignment.center,
+                      // height: 200,
+                      fit: pw.BoxFit.fill,
+                    ),
+                    pw.Text(
+                      'Avitech Nutrition',
+                    ),
+                    pw.SizedBox(height: 20.0),
+                    
+                    pw.SizedBox(height: 20.0),
+                    pw.TableHelper.fromTextArray(
+                      cellPadding:  const pw.EdgeInsets.all(8.0),
+              context: context,
+              data:  <List<String>>[
+                <String>['Name','Contact No', 'Reason','Department' , 'Person'],
+                <String>[nameText,contactText,reasonText,'$_selectDepartment','$_selectPerson'],
+              ],
+            ),
+                  ]),
+            );
+          },
+          pageFormat: PdfPageFormat.a4),
+    );
+    final path = (await getExternalStorageDirectory())!.path;
+    final file = File('$path/$nameText.pdf');
+    file.writeAsBytesSync(await pdf.save());
+    OpenFile.open('$path/$nameText.pdf');
+  }
 
   File? image;
 
@@ -35,7 +89,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
   }
 
   var _selectDepartment;
-  var Department = {
+  var department = {
     'IT': 'I.T.',
     'Laboratory': 'Lab',
     'Administrator': 'Admin',
@@ -46,7 +100,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
   };
 
   var _selectPerson;
-  var Person = {
+  var person = {
     'Mr. Arjun Vohra': 'C.E.O',
     'Mr. Nirmalaya Sinha': 'H.R.',
     'Mr. Praveen Gaur': 'H.R.',
@@ -59,23 +113,22 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
 
   List _person = [];
   personDropdown(personName) {
-    Person.forEach((key, value) {
+    person.forEach((key, value) {
       if (personName == value) {
         _person.add(key);
       }
     });
   }
 
-  List _departments = [];
+  final List _departments = [];
   departmentDropdown() {
-    Department.forEach((key, value) {
+    department.forEach((key, value) {
       _departments.add(key);
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     departmentDropdown();
   }
@@ -110,7 +163,6 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        
         body: Center(
           child: SingleChildScrollView(
             child: Container(
@@ -125,6 +177,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                 ),
               ),
               child: Form(
+                key: formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -141,7 +194,8 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                                 'https://img.freepik.com/free-photo/abstract-luxury-blur-grey-color-gradient-used-as-background-studio-wall-display-your-products_1258-52609.jpg',
                                 width: 150,
                                 height: 150,
-                                fit: BoxFit.fill),
+                                fit: BoxFit.fill,
+                              ),
                       ),
                     ),
                     ElevatedButton(
@@ -157,7 +211,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                     ),
                     TextFormField(
                       controller: nameController,
-                      autovalidateMode: AutovalidateMode.always,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) => value == null
                           ? 'Please Enter the name'
                           : (value.contains(nameRegExp)
@@ -181,7 +235,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                       height: 10.0,
                     ),
                     TextFormField(
-                      autovalidateMode: AutovalidateMode.always,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: contactNoController,
                       validator: (value) => value == null
                           ? 'Please enter the Contact No'
@@ -231,8 +285,8 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                           Container(
                             height: 50.0,
                             width: MediaQuery.of(context).size.width * 1.15,
-                            margin: EdgeInsets.only(top: 10.0),
-                            padding: EdgeInsets.all(10.0),
+                            margin: const EdgeInsets.only(top: 10.0),
+                            padding: const EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: Colors.black,
@@ -266,7 +320,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                                   setState(
                                     () {
                                       _person = [];
-                                      personDropdown(Department[val]);
+                                      personDropdown(department[val]);
                                       _selectDepartment = val! as String;
                                     },
                                   );
@@ -309,7 +363,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                                 onChanged: (val) {
                                   setState(
                                     () {
-                                      print(Department[val]);
+                                      print(department[val]);
                                       _selectPerson = val! as String;
                                     },
                                   );
@@ -328,20 +382,30 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            addData();
+                            if(formKey.currentState!.validate())
+                            {
+                              // addData();
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text("Data Saved Succesfully..."),
                               ),
                             );
+                            }
+                            
                           },
-                          child: Text("Save Data"),
+                          child: const Text("Save Data"),
                         ),
                         ElevatedButton(
                           onPressed: () {
                             clearText();
                           },
-                          child: Text("Reset Data"),
+                          child: const Text("Reset Data"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            _createPdf();
+                          },
+                          child: const Text("Create PDF"),
                         ),
                       ],
                     )
