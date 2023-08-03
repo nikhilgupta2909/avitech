@@ -1,0 +1,178 @@
+[33mcommit 5538c3e83ac31ac9c18b7effba2341bd00dd6eed[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Nikhil Kumar Gupta <guptaa.nikhil072@gmail.com>
+Date:   Wed Jul 26 17:19:21 2023 +0530
+
+    Commit - Add PDF Functionality
+
+[1mdiff --git a/.vs/avinutri/FileContentIndex/794089f5-74be-4f77-8a93-955abbf654c6.vsidx b/.vs/avinutri/FileContentIndex/794089f5-74be-4f77-8a93-955abbf654c6.vsidx[m
+[1mnew file mode 100644[m
+[1mindex 0000000..656a4a8[m
+Binary files /dev/null and b/.vs/avinutri/FileContentIndex/794089f5-74be-4f77-8a93-955abbf654c6.vsidx differ
+[1mdiff --git a/.vs/avinutri/FileContentIndex/read.lock b/.vs/avinutri/FileContentIndex/read.lock[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e69de29[m
+[1mdiff --git a/.vs/avinutri/v17/.wsuo b/.vs/avinutri/v17/.wsuo[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a5290f8[m
+Binary files /dev/null and b/.vs/avinutri/v17/.wsuo differ
+[1mdiff --git a/.vs/slnx.sqlite b/.vs/slnx.sqlite[m
+[1mnew file mode 100644[m
+[1mindex 0000000..8270516[m
+Binary files /dev/null and b/.vs/slnx.sqlite differ
+[1mdiff --git a/.vs/slnx.sqlite-journal b/.vs/slnx.sqlite-journal[m
+[1mnew file mode 100644[m
+[1mindex 0000000..636c2a2[m
+Binary files /dev/null and b/.vs/slnx.sqlite-journal differ
+[1mdiff --git a/lib/screens/visitor_registration_screen.dart b/lib/screens/visitor_registration_screen.dart[m
+[1mindex f569790..bdc734e 100644[m
+[1m--- a/lib/screens/visitor_registration_screen.dart[m
+[1m+++ b/lib/screens/visitor_registration_screen.dart[m
+[36m@@ -1,9 +1,14 @@[m
+ // import 'package:avinutri/widgets/reusable_widgets.dart';[m
+ import 'dart:io';[m
+ import 'package:cloud_firestore/cloud_firestore.dart';[m
+[31m-// import 'package:firebase_core/firebase_core.dart';[m
+[32m+[m[32mimport 'package:firebase_core/firebase_core.dart';[m
+ import 'package:flutter/material.dart';[m
+[32m+[m[32mimport 'package:flutter/services.dart';[m
+ import 'package:image_picker/image_picker.dart';[m
+[32m+[m[32mimport 'package:pdf/pdf.dart';[m
+[32m+[m[32mimport 'package:pdf/widgets.dart' as pw;[m
+[32m+[m[32mimport 'package:open_file/open_file.dart';[m
+[32m+[m[32mimport 'package:path_provider/path_provider.dart';[m
+ // import 'package:snippet_coder_utils/FormHelper.dart';[m
+ [m
+ class VisitorRegistration extends StatefulWidget {[m
+[36m@@ -17,12 +22,61 @@[m [mclass _VisitorRegistrationState extends State<VisitorRegistration> {[m
+   var name = "";[m
+   var contactNo = "";[m
+ [m
+[32m+[m[32m  final formKey = GlobalKey<FormState>();[m
+[32m+[m
+   static final RegExp nameRegExp = RegExp('[a-zA-Z]');[m
+ [m
+   final nameController = TextEditingController();[m
+   final contactNoController = TextEditingController();[m
+   final reasonController = TextEditingController();[m
+ [m
+[32m+[m[32m   _createPdf() async {[m
+[32m+[m[32m    final pdf = pw.Document();[m
+[32m+[m[32m    var nameText = nameController.text;[m
+[32m+[m[32m    var contactText = contactNoController.text;[m
+[32m+[m[32m    var reasonText = reasonController.text;[m
+[32m+[m[32m    final image =[m
+[32m+[m[32m        (await rootBundle.load('assets/images/logo.png')).buffer.asUint8List();[m
+[32m+[m[32m    pdf.addPage([m
+[32m+[m[32m      pw.Page([m
+[32m+[m[32m          build: (pw.Context context) {[m
+[32m+[m[32m            return pw.Center([m
+[32m+[m[32m              child: pw.Column([m
+[32m+[m[32m                  // mainAxisAlignment: pw.MainAxisAlignment.start,[m
+[32m+[m[32m                  crossAxisAlignment: pw.CrossAxisAlignment.start,[m
+[32m+[m[32m                  children: [[m
+[32m+[m[32m                    pw.Image([m
+[32m+[m[32m                      pw.MemoryImage(image),[m
+[32m+[m[32m                      width: MediaQuery.of(this.context).size.width,[m
+[32m+[m[32m                      alignment: pw.Alignment.center,[m
+[32m+[m[32m                      // height: 200,[m
+[32m+[m[32m                      fit: pw.BoxFit.fill,[m
+[32m+[m[32m                    ),[m
+[32m+[m[32m                    pw.Text([m
+[32m+[m[32m                      'Avitech Nutrition',[m
+[32m+[m[32m                    ),[m
+[32m+[m[32m                    pw.SizedBox(height: 20.0),[m
+[32m+[m[41m                    [m
+[32m+[m[32m                    pw.SizedBox(height: 20.0),[m
+[32m+[m[32m                    pw.TableHelper.fromTextArray([m
+[32m+[m[32m                      cellPadding:  const pw.EdgeInsets.all(8.0),[m
+[32m+[m[32m              context: context,[m
+[32m+[m[32m              data:  <List<String>>[[m
+[32m+[m[32m                <String>['Name','Contact No', 'Reason','Department' , 'Person'],[m
+[32m+[m[32m                <String>[nameText,contactText,reasonText,'$_selectDepartment','$_selectPerson'],[m
+[32m+[m[32m              ],[m
+[32m+[m[32m            ),[m
+[32m+[m[32m                  ]),[m
+[32m+[m[32m            );[m
+[32m+[m[32m          },[m
+[32m+[m[32m          pageFormat: PdfPageFormat.a4),[m
+[32m+[m[32m    );[m
+[32m+[m[32m    final path = (await getExternalStorageDirectory())!.path;[m
+[32m+[m[32m    final file = File('$path/$nameText.pdf');[m
+[32m+[m[32m    file.writeAsBytesSync(await pdf.save());[m
+[32m+[m[32m    OpenFile.open('$path/$nameText.pdf');[m
+[32m+[m[32m  }[m
+[32m+[m
+   File? image;[m
+ [m
+   Future pickImage(source) async {[m
+[36m@@ -35,7 +89,7 @@[m [mclass _VisitorRegistrationState extends State<VisitorRegistration> {[m
+   }[m
+ [m
+   var _selectDepartment;[m
+[31m-  var Department = {[m
+[32m+[m[32m  var department = {[m
+     'IT': 'I.T.',[m
+     'Laboratory': 'Lab',[m
+     'Administrator': 'Admin',[m
+[36m@@ -46,7 +100,7 @@[m [mclass _VisitorRegistrationState extends State<VisitorRegistration> {[m
+   };[m
+ [m
+   var _selectPerson;[m
+[31m-  var Person = {[m
+[32m+[m[32m  var person = {[m
+     'Mr. Arjun Vohra': 'C.E.O',[m
+     'Mr. Nirmalaya Sinha': 'H.R.',[m
+     'Mr. Praveen Gaur': 'H.R.',[m
+[36m@@ -59,23 +113,22 @@[m [mclass _VisitorRegistrationState extends State<VisitorRegistration> {[m
+ [m
+   List _person = [];[m
+   personDropdown(personName) {[m
+[31m-    Person.forEach((key, value) {[m
+[32m+[m[32m    person.forEach((key, value) {[m
+       if (personName == value) {[m
+         _person.add(key);[m
+       }[m
+     });[m
+   }[m
+ [m
+[31m-  List _departments = [];[m
+[32m+[m[32m  final List _departments = [];[m
+   departmentDropdown() {[m
+[31m-    Department.forEach((key, value) {[m
+[32m+[m[32m    department.forEach((key, value) {[m
+       _departments.add(key);[m
+     });[m
+   }[m
+ [m
+   @override[m
+   void initState() {[m
+[31m-    // TODO: implement initState[m
+     super.initState();[m
+     departmentDropdown();[m
+   }[m
+[36m@@ -110,7 +163,6 @@[m [mclass _VisitorRegistrationState extends State<VisitorRegistration> {[m
+     return SafeArea([m
+       child: Scaffold([m
+         resizeToAvoidBottomInset: false,[m
+[31m-        [m
+         body: Center([m
+           child: SingleChildScrollView([m
+             child: Container([m
+[36m@@ -125,6 +177,7 @@[m [mclass _VisitorRegistrationState extends State<VisitorRegistration> {[m
+                 ),[m
+               ),[m
+               child: Form([m
+[32m+[m[32m                key: formKey,[m
+                 child: Column([m
+                   mainAxisAlignment: MainAxisAlignment.start,[m
+                   children: [[m
+[36m@@ -141,7 +194,8 @@[m [mclass _VisitorRegistrationState extends State<VisitorRegistration> {[m
+                                 'https://img.freepik.com/free-photo/abstract-luxury-blur-grey-color-gradient-used-as-background-studio-wall-display-your-products_1258-52609.jpg',[m
+                                 width: 150,[m
+                                 height: 150,[m
+[31m-                                fit: BoxFit.fill),[m
+[32m+[m[32m                                fit: BoxFit.fill,[m
+[32m+[m[32m                              ),[m
+                       ),[m
+                     ),[m
+            

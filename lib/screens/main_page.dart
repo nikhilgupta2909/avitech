@@ -16,7 +16,7 @@ class _MainPage extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+     body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
@@ -62,7 +62,7 @@ class _MainPage extends State<MainPage> {
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
+                      context, 
                       MaterialPageRoute(
                           builder: (context) => const VisitorRegistration()));
                 },

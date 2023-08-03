@@ -1,7 +1,5 @@
-// import 'package:avinutri/widgets/reusable_widgets.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,7 +7,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-// import 'package:snippet_coder_utils/FormHelper.dart';
 
 class VisitorRegistration extends StatefulWidget {
   const VisitorRegistration({super.key});
@@ -30,7 +27,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
   final contactNoController = TextEditingController();
   final reasonController = TextEditingController();
 
-   _createPdf() async {
+  _createPdf() async {
     final pdf = pw.Document();
     var nameText = nameController.text;
     var contactText = contactNoController.text;
@@ -56,16 +53,28 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                       'Avitech Nutrition',
                     ),
                     pw.SizedBox(height: 20.0),
-                    
                     pw.SizedBox(height: 20.0),
+                    pw.SizedBox(height: 1.0),
                     pw.TableHelper.fromTextArray(
-                      cellPadding:  const pw.EdgeInsets.all(8.0),
-              context: context,
-              data:  <List<String>>[
-                <String>['Name','Contact No', 'Reason','Department' , 'Person'],
-                <String>[nameText,contactText,reasonText,'$_selectDepartment','$_selectPerson'],
-              ],
-            ),
+                      cellPadding: const pw.EdgeInsets.all(8.0),
+                      context: context,
+                      data: <List<String>>[
+                        <String>[
+                          'Name',
+                          'Contact No',
+                          'Reason',
+                          'Department',
+                          'Person'
+                        ],
+                        <String>[
+                          nameText,
+                          contactText,
+                          reasonText,
+                          '$_selectDepartment',
+                          '$_selectPerson'
+                        ],
+                      ],
+                    ),
                   ]),
             );
           },
@@ -382,16 +391,14 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            if(formKey.currentState!.validate())
-                            {
+                            if (formKey.currentState!.validate()) {
                               // addData();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Data Saved Succesfully..."),
-                              ),
-                            );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Data Saved Succesfully..."),
+                                ),
+                              );
                             }
-                            
                           },
                           child: const Text("Save Data"),
                         ),
@@ -401,14 +408,8 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                           },
                           child: const Text("Reset Data"),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            _createPdf();
-                          },
-                          child: const Text("Create PDF"),
-                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
