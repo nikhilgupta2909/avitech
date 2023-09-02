@@ -1,12 +1,14 @@
 import 'dart:io';
+import 'package:avinutri/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/widgets.dart' as pdfWidgets;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:intl/intl.dart';
 
 class VisitorRegistration extends StatefulWidget {
   const VisitorRegistration({super.key});
@@ -26,64 +28,73 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
   final nameController = TextEditingController();
   final contactNoController = TextEditingController();
   final reasonController = TextEditingController();
+  final currentTimeController = TextEditingController();
+  final currentDateController = TextEditingController();
 
-  _createPdf() async {
-    final pdf = pw.Document();
-    var nameText = nameController.text;
-    var contactText = contactNoController.text;
-    var reasonText = reasonController.text;
+  DateTime get time => time;
+
+  //
+
+  generatePdf(List<DocumentSnapshot> data) async {
+    final pdf = pdfWidgets.Document();
     final image =
         (await rootBundle.load('assets/images/logo.png')).buffer.asUint8List();
     pdf.addPage(
-      pw.Page(
-          build: (pw.Context context) {
-            return pw.Center(
-              child: pw.Column(
-                  // mainAxisAlignment: pw.MainAxisAlignment.start,
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+      pdfWidgets.Page(
+        build: (pdfWidgets.Context context) {
+          return pdfWidgets.Center(
+            child: pdfWidgets.Table(
+              defaultVerticalAlignment:
+                  pdfWidgets.TableCellVerticalAlignment.middle,
+              tableWidth: pdfWidgets.TableWidth.max,
+              border: pdfWidgets.TableBorder.all(width: 2.0),
+              children: [
+                pdfWidgets.TableRow(
+                  verticalAlignment:
+                      pdfWidgets.TableCellVerticalAlignment.middle,
                   children: [
-                    pw.Image(
-                      pw.MemoryImage(image),
-                      width: MediaQuery.of(this.context).size.width,
-                      alignment: pw.Alignment.center,
-                      // height: 200,
-                      fit: pw.BoxFit.fill,
-                    ),
-                    pw.Text(
-                      'Avitech Nutrition',
-                    ),
-                    pw.SizedBox(height: 20.0),
-                    pw.SizedBox(height: 20.0),
-                    pw.SizedBox(height: 1.0),
-                    pw.TableHelper.fromTextArray(
-                      cellPadding: const pw.EdgeInsets.all(8.0),
-                      context: context,
-                      data: <List<String>>[
-                        <String>[
-                          'Name',
-                          'Contact No',
-                          'Reason',
-                          'Department',
-                          'Person'
-                        ],
-                        <String>[
-                          nameText,
-                          contactText,
-                          reasonText,
-                          '$_selectDepartment',
-                          '$_selectPerson'
-                        ],
-                      ],
-                    ),
-                  ]),
-            );
-          },
-          pageFormat: PdfPageFormat.a4),
+                    pdfWidgets.Text('Name'),
+                    pdfWidgets.Text('Contact No'),
+                    pdfWidgets.Text('Reason'),
+                    pdfWidgets.Text('Date'),
+                    pdfWidgets.Text('Time'),
+                    pdfWidgets.Text('Department Name'),
+                    pdfWidgets.Text('Meeting With'),
+                  ],
+                ),
+                for (var doc in data)
+                  pdfWidgets.TableRow(
+                    verticalAlignment:
+                        pdfWidgets.TableCellVerticalAlignment.middle,
+                    children: [
+                      pdfWidgets.Text(doc['Name']),
+                      pdfWidgets.Text(doc['Contact No'].toString()),
+                      pdfWidgets.Text(doc['Reason']),
+                      pdfWidgets.Text(doc['Date']),
+                      pdfWidgets.Text(doc['Time']),
+                      pdfWidgets.Text(doc['Department']),
+                      pdfWidgets.Text(doc['Person']),
+                      // pdfWidgets.Image(
+                      //   pdfWidgets.MemoryImage(image),
+                      //   width: 40.0,
+                      //   height: 40.0,
+                      //   alignment: pdfWidgets.Alignment.center,
+                      //   fit: pdfWidgets.BoxFit.fill
+                      // ),
+                    ],
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
     );
+
     final path = (await getExternalStorageDirectory())!.path;
-    final file = File('$path/$nameText.pdf');
+    final file = File('$path/Output1.pdf');
     file.writeAsBytesSync(await pdf.save());
-    OpenFile.open('$path/$nameText.pdf');
+    OpenFile.open('$path/Output1.pdf');
+    // OpenFile.open(output.path)
   }
 
   File? image;
@@ -155,38 +166,28 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
     });
   }
 
-  void addData() {
-    Map<String, String> dataSave = {
-      'Name': nameController.text,
-      'Contact No': contactNoController.text.toString(),
-      'Reason': reasonController.text,
-      'Department': _selectDepartment,
-      'Person': _selectPerson
-    };
-
-    FirebaseFirestore.instance.collection('user_data').add(dataSave);
-  }
-
   @override
   Widget build(BuildContext context) {
+    var time = DateTime.now();
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Center(
-          child: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white,
-                    Colors.purple,
-                  ],
-                ),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white,
+                  Colors.purple,
+                ],
               ),
-              child: Form(
-                key: formKey,
+            ),
+            child: Form(
+              key: formKey,
+              child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -216,7 +217,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                       ),
                     ),
                     const SizedBox(
-                      height: 50.0,
+                      height: 20.0,
                     ),
                     TextFormField(
                       controller: nameController,
@@ -267,7 +268,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20.0,
+                      height: 10.0,
                     ),
                     TextFormField(
                       controller: reasonController,
@@ -383,8 +384,32 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                         ],
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 5.0),
+                      child: TextField(
+                        controller: currentTimeController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: DateFormat('Hm').format(time)),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 5.0),
+                      child: TextField(
+                        controller: currentDateController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: DateFormat('yMMMMd').format(time)),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w700),
+                      ),
+                    ),
                     const SizedBox(
-                      height: 50.0,
+                      height: 20.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -392,7 +417,8 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                         ElevatedButton(
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
-                              // addData();
+                              addData();
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text("Data Saved Succesfully..."),
@@ -408,6 +434,16 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                           },
                           child: const Text("Reset Data"),
                         ),
+                        ElevatedButton(
+                            onPressed: () async {
+                              final QuerySnapshot snapshot =
+                                  await FirebaseFirestore.instance
+                                      .collection('user_data')
+                                      .get();
+                              final data = snapshot.docs;
+                              await generatePdf(data);
+                            },
+                            child: const Text("Generate PDF"))
                       ],
                     ),
                   ],
@@ -418,5 +454,19 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
         ),
       ),
     );
+  }
+
+  void addData() {
+    Map<String, String> dataSave = {
+      'Name': nameController.text,
+      'Contact No': contactNoController.text.toString(),
+      'Reason': reasonController.text,
+      'Date': DateFormat('yMMMMd').format(time),
+      'Time': DateFormat('Hm').format(time),
+      'Department': _selectDepartment,
+      'Person': _selectPerson,
+    };
+
+    FirebaseFirestore.instance.collection('user_data').add(dataSave);
   }
 }

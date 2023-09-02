@@ -5,6 +5,15 @@ import 'package:flutter/material.dart';
 //This package is used for formatting the date
 // import 'package:intl/intl.dart';
 
+var arrOffice = [
+  "1. Admin",
+  "2. Visitor Entry",
+  "3. Binola",
+  "4. Avitech H.O.",
+  "5. Vidya Vana",
+  "6. Jhajjar",
+];
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -13,79 +22,85 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPage extends State<MainPage> {
+  var officeName ;
+
+  void clearDropdown() {
+    officeName = null;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    clearDropdown();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     body: Center(
+      body: Center(
         child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.white,
-                Colors.deepPurple,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white,
+                  Colors.deepPurple,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                  height: 50.0,
+                  width: MediaQuery.of(context).size.width,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 30.0, horizontal: 100.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1.2,
                     ),
-                  );
-                },
-                style: const ButtonStyle(
-                  padding: MaterialStatePropertyAll(
-                    EdgeInsets.all(15.0),
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
-                  backgroundColor: MaterialStatePropertyAll(Colors.white),
-                  shape: MaterialStatePropertyAll(
-                    StadiumBorder(side: BorderSide.none),
-                  ),
-                ),
-                child: const Text(
-                  "Admin Login",
-                  style: TextStyle(
-                      color: Colors.purple,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context, 
-                      MaterialPageRoute(
-                          builder: (context) => const VisitorRegistration()));
-                },
-                style: const ButtonStyle(
-                  padding: MaterialStatePropertyAll(
-                    EdgeInsets.all(15.0),
-                  ),
-                  backgroundColor: MaterialStatePropertyAll(Colors.white),
-                  shape: MaterialStatePropertyAll(
-                    StadiumBorder(side: BorderSide.none),
-                  ),
-                ),
-                child: const Text(
-                  "Visitor Entry",
-                  style: TextStyle(
-                      color: Colors.purple,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
-          ),
-        ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      value: officeName,
+                      hint: const Text("Select Office"),
+                      items: arrOffice
+                          .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          officeName = value!;
+                          // clearDropdown();
+                        });
+                        switch (value) {
+                          case "1. Admin":
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()));
+                            break;
+
+                          case "2. Visitor Entry":
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const VisitorRegistration()));
+                        }
+                      },
+                    ),
+                  ))
+            ])),
       ),
     );
   }

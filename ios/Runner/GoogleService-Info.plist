@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>134849275185-hddsjdrj6eaghbg1b26oeht8dhnbu292.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.134849275185-hddsjdrj6eaghbg1b26oeht8dhnbu292</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA79D4_LpIHlKg3Lkey88936DDD9rS1EHA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>134849275185</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.avinutri</string>
+	<key>PROJECT_ID</key>
+	<string>flutterfirebase-12212</string>
+	<key>STORAGE_BUCKET</key>
+	<string>flutterfirebase-12212.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:134849275185:ios:7e90cd24c51ba314dfbc10</string>
+</dict>
+</plist>
