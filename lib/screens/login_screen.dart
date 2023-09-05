@@ -1,4 +1,5 @@
 import 'package:avinutri/screens/main_page.dart';
+import 'package:avinutri/widgets/drawer.dart';
 import 'package:avinutri/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: const Text("Avitech"),
+          centerTitle: true,
+        ),
+        drawer: const MyDrawer(),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,

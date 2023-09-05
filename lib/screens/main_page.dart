@@ -1,6 +1,9 @@
+import 'package:avinutri/constants/constants.dart';
 import 'package:avinutri/screens/login_screen.dart';
 
 import 'package:avinutri/screens/visitor_registration_screen.dart';
+import 'package:avinutri/widgets/drawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 //This package is used for formatting the date
 // import 'package:intl/intl.dart';
@@ -22,85 +25,92 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPage extends State<MainPage> {
-  var officeName ;
+  // var officeName ;
 
-  void clearDropdown() {
-    officeName = null;
-  }
+  // void clearDropdown() {
+  //   officeName = null;
+  // }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    clearDropdown();
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   clearDropdown();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white,
-                  Colors.deepPurple,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                  height: 50.0,
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 30.0, horizontal: 100.0),
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 1.2,
-                    ),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      value: officeName,
-                      hint: const Text("Select Office"),
-                      items: arrOffice
-                          .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          officeName = value!;
-                          // clearDropdown();
-                        });
-                        switch (value) {
-                          case "1. Admin":
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()));
-                            break;
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Avitech"),
+          centerTitle: true,
+        ),
+        drawer: const MyDrawer(),
+        // body: Center(
+        //   child: Container(
+        //       width: MediaQuery.of(context).size.width,
+        //       height: MediaQuery.of(context).size.height,
+        //       decoration: const BoxDecoration(
+        //         gradient: LinearGradient(
+        //           colors: [
+        //             Colors.white,
+        //             Colors.deepPurple,
+        //           ],
+        //           begin: Alignment.topLeft,
+        //           end: Alignment.bottomRight,
+        //         ),
+        //       ),
+        //       child:
+        //           Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        //         Container(
+        //             height: 50.0,
+        //             width: MediaQuery.of(context).size.width,
+        //             margin: const EdgeInsets.symmetric(
+        //                 vertical: 30.0, horizontal: 100.0),
+        //             padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        //             decoration: BoxDecoration(
+        //               border: Border.all(
+        //                 color: Colors.black,
+        //                 width: 1.2,
+        //               ),
+        //               borderRadius: BorderRadius.circular(15.0),
+        //             ),
+        //             child: DropdownButtonHideUnderline(
+        //               child: DropdownButton(
+        //                 value: officeName,
+        //                 hint: const Text("Select Office"),
+        //                 items: arrOffice
+        //                     .map((e) => DropdownMenuItem(
+        //                           value: e,
+        //                           child: Text(e),
+        //                         ))
+        //                     .toList(),
+        //                 onChanged: (value) {
+        //                   setState(() {
+        //                     officeName = value!;
+        //                     // clearDropdown();
+        //                   });
+        //                   switch (value) {
+        //                     case "1. Admin":
+        //                       Navigator.push(
+        //                           context,
+        //                           MaterialPageRoute(
+        //                               builder: (context) => const LoginScreen()));
+        //                       break;
 
-                          case "2. Visitor Entry":
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const VisitorRegistration()));
-                        }
-                      },
-                    ),
-                  ))
-            ])),
+        //                     case "2. Visitor Entry":
+        //                       Navigator.push(
+        //                           context,
+        //                           MaterialPageRoute(
+        //                               builder: (context) =>
+        //                                   const VisitorRegistration()));
+        //                   }
+        //                 },
+        //               ),
+        //             ))
+        //       ])),
+        // ),
       ),
     );
   }
