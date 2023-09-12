@@ -1,7 +1,9 @@
 import 'package:avinutri/constants/constants.dart';
-import 'package:avinutri/screens/login_screen.dart';
+import 'package:avinutri/screens/Auth_UI/login_screen.dart';
+import 'package:avinutri/screens/main_page.dart';
 import 'package:avinutri/screens/visitor_registration_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatefulWidget {
@@ -60,14 +62,22 @@ class _MyDrawerState extends State<MyDrawer> {
                                     const VisitorRegistration())));
                       },
                     ),
-                    const ListTile(
-                      title: Text("Vidya Vana"),
+                    ListTile(
+                        title: Text(
+                      "Vidya Vana (Coming Soon)",
+                      style: TextStyle(color: Colors.grey.shade400),
+                    )),
+                    ListTile(
+                      title: Text(
+                        "Binola (Coming Soon)",
+                        style: TextStyle(color: Colors.grey.shade400),
+                      ),
                     ),
-                    const ListTile(
-                      title: Text("Binola"),
-                    ),
-                    const ListTile(
-                      title: Text("Jhajjar"),
+                    ListTile(
+                      title: Text(
+                        "Jhajjar (Coming Soon)",
+                        style: TextStyle(color: Colors.grey.shade400),
+                      ),
                     ),
                   ],
                 ),
@@ -107,9 +117,18 @@ class _MyDrawerState extends State<MyDrawer> {
                   title: Text("Log-In"),
                   leading: Icon(Icons.login),
                 ),
-                const ListTile(
-                  title: Text("Log-Out"),
-                  leading: Icon(Icons.logout),
+                ListTile(
+                  title: const Text("Log-Out"),
+                  leading: const Icon(Icons.logout),
+                  onTap: () {
+                    FirebaseAuth.instance
+                        .signOut()
+                        .then((value) => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainPage(),
+                            )));
+                  },
                 ),
               ],
             )

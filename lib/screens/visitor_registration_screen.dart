@@ -1,14 +1,11 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
+
 import 'dart:io';
-import 'package:avinutri/constants/constants.dart';
 import 'package:avinutri/widgets/drawer.dart';
+import 'package:avinutri/widgets/reusable_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pdfWidgets;
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 
 class VisitorRegistration extends StatefulWidget {
@@ -32,6 +29,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
   final currentTimeController = TextEditingController();
   final currentDateController = TextEditingController();
 
+  // ignore: recursive_getters
   DateTime get time => time;
 
   //
@@ -111,10 +109,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Avitech"),
-          centerTitle: true,
-        ),
+        appBar: appBar(),
         drawer: const MyDrawer(),
         resizeToAvoidBottomInset: false,
         body: Center(
@@ -317,7 +312,6 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                                 onChanged: (val) {
                                   setState(
                                     () {
-                                      print(department[val]);
                                       _selectPerson = val! as String;
                                     },
                                   );
@@ -391,7 +385,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
   }
 
   void addData() {
-    Map<String, String> dataSave = {
+    Map<String, String> saveData = {
       'Name': nameController.text,
       'Contact No': contactNoController.text.toString(),
       'Reason': reasonController.text,
@@ -401,6 +395,6 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
       'Person': _selectPerson,
     };
 
-    FirebaseFirestore.instance.collection('user_data').add(dataSave);
+    FirebaseFirestore.instance.collection('user_data').add(saveData);
   }
 }

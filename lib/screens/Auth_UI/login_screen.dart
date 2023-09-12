@@ -1,6 +1,7 @@
-import 'package:avinutri/screens/main_page.dart';
+import 'package:avinutri/screens/Auth_UI/registration_screen.dart';
 import 'package:avinutri/widgets/drawer.dart';
 import 'package:avinutri/widgets/reusable_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,16 +12,14 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
- final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passTextController = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: const Text("Avitech"),
-          centerTitle: true,
-        ),
-        drawer: const MyDrawer(),
+      appBar: appBar(),
+      drawer: const MyDrawer(),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -52,14 +51,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 reText("Password", Icons.lock_outline_rounded, true,
                     _passTextController),
-               const SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
-                reButton(context, true, (){}),
-                reButton(context, false, (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MainPage()));
-                }),
-               
+
+                // Login Button for Admin
+                reButton(
+                  context,
+                  true,
+                  () {
+                    FirebaseAuth.instance
+                        .signInWithEmailAndPassword(
+                            email: _emailTextController.text,
+                            password: _passTextController.text)
+                        .then(
+                          (value) => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegistrationScreen(),
+                            ),
+                          ),
+                        );
+                  },
+                ),
               ],
             ),
           ),

@@ -1,9 +1,4 @@
-import 'package:avinutri/constants/constants.dart';
-import 'package:avinutri/screens/login_screen.dart';
-
-import 'package:avinutri/screens/visitor_registration_screen.dart';
 import 'package:avinutri/widgets/drawer.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 //This package is used for formatting the date
 // import 'package:intl/intl.dart';
@@ -33,7 +28,6 @@ class _MainPage extends State<MainPage> {
 
   // @override
   // void initState() {
-  //   // TODO: implement initState
   //   super.initState();
   //   clearDropdown();
   // }
@@ -42,7 +36,11 @@ class _MainPage extends State<MainPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          foregroundColor: Colors.black87,
           title: const Text("Avitech"),
           centerTitle: true,
         ),

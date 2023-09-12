@@ -12,6 +12,17 @@ Image logoWidget(String imageName) {
   );
 }
 
+AppBar appBar()
+{
+  return AppBar(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        title: const Text("Avitech"),
+        centerTitle: true,
+      );
+}
+
 TextField reText(String text, IconData icon, bool isPassword,
     TextEditingController controller) {
   return TextField(
