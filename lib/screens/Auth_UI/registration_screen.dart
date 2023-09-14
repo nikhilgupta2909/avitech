@@ -17,21 +17,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController contactController = TextEditingController();
 
-  void createUser() {
-    Map<String, String> user = {
+  void createUser()
+  {
+    Map<String, String> userData =
+    {
+
       "Name": nameController.text,
       "Contact No": contactController.text.toString(),
       "Email": emailController.text.toString(),
       "Password": passController.text.toString()
+
     };
 
-    FirebaseFirestore.instance.collection("Register_User").add(user);
+    FirebaseFirestore.instance.collection("Register_User").add(userData);
   }
 
   final formkey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return Scaffold(
         appBar: appBar(),
         drawer: const MyDrawer(),
@@ -83,14 +88,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         decoration: const InputDecoration(
                           fillColor: Colors.white54,
                           filled: true,
-                          label: Text("Enter the name"),
+                          label: Text("Enter your name"),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(20.0),
                             ),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
+                            borderRadius: BorderRadius.all( 
                               Radius.circular(20.0),
                             ),
                           ),

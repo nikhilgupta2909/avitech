@@ -36,6 +36,42 @@ class _MainPage extends State<MainPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          unselectedItemColor:
+              Colors.blue, //It is used to give the color for Labels...
+          backgroundColor: Colors.black87,
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                label: "Home",
+                backgroundColor: Colors.blue),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                label: "Home",
+                backgroundColor: Colors.blue),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: Colors.white,
+              ),
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: Colors.white,
+              ),
+              label: "Home",
+            ),
+          ],
+        ),
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.transparent,

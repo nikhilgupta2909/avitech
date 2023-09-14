@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,37 +31,111 @@ generatePdf(List<DocumentSnapshot> data) async {
                   pdfWidgets.SizedBox(width: 30.0),
                 ]),
                 pdfWidgets.SizedBox(height: 50.0),
+                // pdfWidgets.TableHelper.fromTextArray(
+                //   headers: <String>['Name','Contact No','Reason','Department','Date','Time','Meeting With'],
+                //   cellAlignment: pdfWidgets.Alignment.center,
+                //   data: for (var doc in data)
+                // ),
                 pdfWidgets.Table(
-                  tableWidth: pdfWidgets.TableWidth.max,
-                  border: pdfWidgets.TableBorder.all(width: 1.0),
+                  columnWidths: {
+                    0: const pdfWidgets.FixedColumnWidth(2),
+                    1: const pdfWidgets.FixedColumnWidth(2),
+                    2: const pdfWidgets.FixedColumnWidth(2),
+                    3: const pdfWidgets.FixedColumnWidth(2),
+                    4: const pdfWidgets.FixedColumnWidth(2),
+                    5: const pdfWidgets.FixedColumnWidth(2),
+                    6: const pdfWidgets.FixedColumnWidth(2),
+                  },
+                  border: pdfWidgets.TableBorder.all(
+                    width: 1.2,
+                  ),
                   children: [
                     pdfWidgets.TableRow(
-                      verticalAlignment:
-                          pdfWidgets.TableCellVerticalAlignment.middle,
                       children: [
-                        pdfWidgets.Text('Name'),
-                        pdfWidgets.Text('Contact No'),
-                        pdfWidgets.Text('Reason'),
-                        pdfWidgets.Text('Date'),
-                        pdfWidgets.Text('Time'),
-                        pdfWidgets.Text('Department Name'),
-                        pdfWidgets.Text('Meeting With'),
+                        pdfWidgets.Container(
+                          padding: const pdfWidgets.EdgeInsets.all(10.0),
+                          child: pdfWidgets.Text(
+                            'Name',
+                          ),
+                        ),
+                        pdfWidgets.Container(
+                          padding: const pdfWidgets.EdgeInsets.all(10.0),
+                          child: pdfWidgets.Text('Contact No'),
+                        ),
+                        pdfWidgets.Container(
+                          padding: const pdfWidgets.EdgeInsets.all(10.0),
+                          child: pdfWidgets.Text('Reason'),
+                        ),
+                        pdfWidgets.Container(
+                          padding: const pdfWidgets.EdgeInsets.all(10.0),
+                          child: pdfWidgets.Text(
+                            'Date',
+                          ),
+                        ),
+                        pdfWidgets.Container(
+                          padding: const pdfWidgets.EdgeInsets.all(10.0),
+                          child: pdfWidgets.Text(
+                            'Time',
+                          ),
+                        ),
+                        pdfWidgets.Container(
+                          padding: const pdfWidgets.EdgeInsets.all(10.0),
+                          child: pdfWidgets.Text(
+                            'Department',
+                          ),
+                        ),
+                        pdfWidgets.Container(
+                          padding: const pdfWidgets.EdgeInsets.all(10.0),
+                          child: pdfWidgets.Text(
+                            'Reason',
+                          ),
+                        ),
                       ],
                     ),
                     for (var doc in data)
                       pdfWidgets.TableRow(
-                        decoration: const pdfWidgets.BoxDecoration(
-                            color: PdfColors.yellow400),
-                        verticalAlignment:
-                            pdfWidgets.TableCellVerticalAlignment.middle,
                         children: [
-                          pdfWidgets.Text(doc['Name']),
-                          pdfWidgets.Text(doc['Contact No'].toString()),
-                          pdfWidgets.Text(doc['Reason']),
-                          pdfWidgets.Text(doc['Date']),
-                          pdfWidgets.Text(doc['Time']),
-                          pdfWidgets.Text(doc['Department']),
-                          pdfWidgets.Text(doc['Person']),
+                          pdfWidgets.Container(
+                            padding: const pdfWidgets.EdgeInsets.all(10.0),
+                            child: pdfWidgets.Text(
+                              doc['Name'],
+                            ),
+                          ),
+                          pdfWidgets.Container(
+                            padding: const pdfWidgets.EdgeInsets.all(10.0),
+                            child: pdfWidgets.Text(
+                              doc['Contact No'].toString(),
+                            ),
+                          ),
+                          pdfWidgets.Container(
+                            padding: const pdfWidgets.EdgeInsets.all(10.0),
+                            child: pdfWidgets.Text(doc['Reason']),
+                          ),
+                          pdfWidgets.Container(
+                            padding: const pdfWidgets.EdgeInsets.all(10.0),
+                            child: pdfWidgets.Text(
+                              doc['Date'],
+                            ),
+                          ),
+                          pdfWidgets.Container(
+                            padding: const pdfWidgets.EdgeInsets.all(10.0),
+                            child: pdfWidgets.Text(
+                              doc['Time'],
+                            ),
+                          ),
+                          pdfWidgets.Container(
+                            padding: const pdfWidgets.EdgeInsets.all(10.0),
+                            child: pdfWidgets.Text(
+                              doc['Department'],
+                            ),
+                          ),
+                          pdfWidgets.Container(
+                            padding: const pdfWidgets.EdgeInsets.all(10.0),
+                            child: pdfWidgets.Text(
+                              doc['Person'],
+                            ),
+                          ),
+
                           // pdfWidgets.Image(
                           //   pdfWidgets.MemoryImage(image),
                           //   width: 40.0,
@@ -81,8 +156,8 @@ generatePdf(List<DocumentSnapshot> data) async {
   );
 
   final path = (await getExternalStorageDirectory())!.path;
-  final file = File('$path/Output.pdf');
+  final file = File('$path/demo.pdf');
   file.writeAsBytesSync(await pdf.save());
-  OpenFile.open('$path/Output1.pdf');
+  OpenFile.open('$path/demo.pdf');
   // OpenFile.open(output.path)
 }

@@ -16,6 +16,7 @@ class VisitorRegistration extends StatefulWidget {
 }
 
 class _VisitorRegistrationState extends State<VisitorRegistration> {
+  
   var name = "";
   var contactNo = "";
 
@@ -101,6 +102,11 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
       reasonController.clear();
       image = null;
     });
+  }
+
+  void uploadImageToFirebase()
+  {
+    
   }
 
   @override
