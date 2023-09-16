@@ -36,43 +36,7 @@ class _MainPage extends State<MainPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          unselectedItemColor:
-              Colors.blue, //It is used to give the color for Labels...
-          backgroundColor: Colors.black87,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.white,
-                ),
-                label: "Home",
-                backgroundColor: Colors.blue),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.white,
-                ),
-                label: "Home",
-                backgroundColor: Colors.blue),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Colors.white,
-              ),
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Colors.white,
-              ),
-              label: "Home",
-            ),
-          ],
-        ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.yellow.shade300,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
@@ -132,7 +96,7 @@ class _MainPage extends State<MainPage> {
         //                           MaterialPageRoute(
         //                               builder: (context) => const LoginScreen()));
         //                       break;
-
+    
         //                     case "2. Visitor Entry":
         //                       Navigator.push(
         //                           context,

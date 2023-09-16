@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
-
 import 'dart:io';
+import 'package:avinutri/constants/constants.dart';
 import 'package:avinutri/widgets/drawer.dart';
 import 'package:avinutri/widgets/reusable_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,7 +15,6 @@ class VisitorRegistration extends StatefulWidget {
 }
 
 class _VisitorRegistrationState extends State<VisitorRegistration> {
-  
   var name = "";
   var contactNo = "";
 
@@ -31,11 +29,12 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
   final currentDateController = TextEditingController();
 
   // ignore: recursive_getters
-  DateTime get time => time;
 
   //
 
   File? image;
+
+
 
   Future pickImage(source) async {
     final image = await ImagePicker().pickImage(source: source);
@@ -104,14 +103,11 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
     });
   }
 
-  void uploadImageToFirebase()
-  {
-    
-  }
+  void uploadImageToFirebase() {}
 
   @override
   Widget build(BuildContext context) {
-    var time = DateTime.now();
+    var currentTime = datetime;
 
     return SafeArea(
       child: Scaffold(
@@ -266,7 +262,9 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                                     .map(
                                       (e) => DropdownMenuItem(
                                         value: e,
-                                        child: Text(e.toString()),
+                                        child: Text(
+                                          e.toString(),
+                                        ),
                                       ),
                                     )
                                     .toList(),
@@ -335,7 +333,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                         controller: currentTimeController,
                         enabled: false,
                         decoration: InputDecoration(
-                            hintText: DateFormat('Hm').format(time)),
+                            hintText: DateFormat('Hm').format(currentTime)),
                         style: const TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w700),
                       ),
@@ -347,7 +345,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                         controller: currentDateController,
                         enabled: false,
                         decoration: InputDecoration(
-                            hintText: DateFormat('yMMMMd').format(time)),
+                            hintText: DateFormat('yMMMMd').format(currentTime)),
                         style: const TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w700),
                       ),
@@ -361,6 +359,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                         ElevatedButton(
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
+                              // const TextField();
                               addData();
 
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -395,8 +394,8 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
       'Name': nameController.text,
       'Contact No': contactNoController.text.toString(),
       'Reason': reasonController.text,
-      'Date': DateFormat('yMMMMd').format(time),
-      'Time': DateFormat('Hm').format(time),
+      'Date': DateFormat('yMMMMd').format(datetime),
+      'Time': DateFormat('Hm').format(datetime),
       'Department': _selectDepartment,
       'Person': _selectPerson,
     };

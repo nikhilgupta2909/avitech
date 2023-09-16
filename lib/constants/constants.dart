@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 // ignore: library_prefixes
 import 'package:pdf/widgets.dart' as pdfWidgets;
+
+var datetime = DateTime.now();
 
 generatePdf(List<DocumentSnapshot> data) async {
   final pdf = pdfWidgets.Document();
@@ -37,15 +38,7 @@ generatePdf(List<DocumentSnapshot> data) async {
                 //   data: for (var doc in data)
                 // ),
                 pdfWidgets.Table(
-                  columnWidths: {
-                    0: const pdfWidgets.FixedColumnWidth(2),
-                    1: const pdfWidgets.FixedColumnWidth(2),
-                    2: const pdfWidgets.FixedColumnWidth(2),
-                    3: const pdfWidgets.FixedColumnWidth(2),
-                    4: const pdfWidgets.FixedColumnWidth(2),
-                    5: const pdfWidgets.FixedColumnWidth(2),
-                    6: const pdfWidgets.FixedColumnWidth(2),
-                  },
+                 
                   border: pdfWidgets.TableBorder.all(
                     width: 1.2,
                   ),
@@ -56,6 +49,7 @@ generatePdf(List<DocumentSnapshot> data) async {
                           padding: const pdfWidgets.EdgeInsets.all(10.0),
                           child: pdfWidgets.Text(
                             'Name',
+                            style: pdfWidgets.TextStyle(fontWeight: pdfWidgets.FontWeight.bold)
                           ),
                         ),
                         pdfWidgets.Container(
