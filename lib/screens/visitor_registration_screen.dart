@@ -348,7 +348,7 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                         controller: currentDateController,
                         enabled: false,
                         decoration: InputDecoration(
-                          hintText: DateFormat('yMMMMD').format(datetime),
+                          hintText: DateFormat('yMMMMd').format(datetime),
                           hintStyle: const TextStyle(
                               color: Colors.black, fontWeight: FontWeight.w700),
                         ),
