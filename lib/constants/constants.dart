@@ -5,10 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
-// ignore: library_prefixes
 import 'package:pdf/widgets.dart' as pdfWidgets;
-
-var datetime = DateTime.now();
 
 generatePdf(List<DocumentSnapshot> data) async {
   final pdf = pdfWidgets.Document();
@@ -30,7 +27,7 @@ generatePdf(List<DocumentSnapshot> data) async {
                         orientation: PdfImageOrientation.topLeft),
                   ),
                   pdfWidgets.SizedBox(width: 30.0),
-                ]),
+                ],),
                 pdfWidgets.SizedBox(height: 50.0),
                 // pdfWidgets.TableHelper.fromTextArray(
                 //   headers: <String>['Name','Contact No','Reason','Department','Date','Time','Meeting With'],
@@ -38,7 +35,6 @@ generatePdf(List<DocumentSnapshot> data) async {
                 //   data: for (var doc in data)
                 // ),
                 pdfWidgets.Table(
-                 
                   border: pdfWidgets.TableBorder.all(
                     width: 1.2,
                   ),
@@ -47,10 +43,9 @@ generatePdf(List<DocumentSnapshot> data) async {
                       children: [
                         pdfWidgets.Container(
                           padding: const pdfWidgets.EdgeInsets.all(10.0),
-                          child: pdfWidgets.Text(
-                            'Name',
-                            style: pdfWidgets.TextStyle(fontWeight: pdfWidgets.FontWeight.bold)
-                          ),
+                          child: pdfWidgets.Text('Name',
+                              style: pdfWidgets.TextStyle(
+                                  fontWeight: pdfWidgets.FontWeight.bold)),
                         ),
                         pdfWidgets.Container(
                           padding: const pdfWidgets.EdgeInsets.all(10.0),

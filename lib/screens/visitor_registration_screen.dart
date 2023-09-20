@@ -34,7 +34,10 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
 
   File? image;
 
+  // ignore: recursive_getters
+  DateTime get datetime => datetime;
 
+  // DateTime get currentTime => currentTime;
 
   Future pickImage(source) async {
     final image = await ImagePicker().pickImage(source: source);
@@ -107,13 +110,12 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
 
   @override
   Widget build(BuildContext context) {
-    var currentTime = datetime;
-
+    var datetime = DateTime.now();
     return SafeArea(
       child: Scaffold(
         appBar: appBar(),
         drawer: const MyDrawer(),
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         body: Center(
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -333,9 +335,10 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                         controller: currentTimeController,
                         enabled: false,
                         decoration: InputDecoration(
-                            hintText: DateFormat('Hm').format(currentTime)),
-                        style: const TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w700),
+                          hintText: DateFormat('Hm').format(datetime),
+                          hintStyle: const TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w700),
+                        ),
                       ),
                     ),
                     Padding(
@@ -345,9 +348,10 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
                         controller: currentDateController,
                         enabled: false,
                         decoration: InputDecoration(
-                            hintText: DateFormat('yMMMMd').format(currentTime)),
-                        style: const TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w700),
+                          hintText: DateFormat('yMMMMD').format(datetime),
+                          hintStyle: const TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w700),
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -394,8 +398,8 @@ class _VisitorRegistrationState extends State<VisitorRegistration> {
       'Name': nameController.text,
       'Contact No': contactNoController.text.toString(),
       'Reason': reasonController.text,
-      'Date': DateFormat('yMMMMd').format(datetime),
-      'Time': DateFormat('Hm').format(datetime),
+      'Date': DateFormat('yMMMMD').format(datetime),
+      'Time': DateFormat('Hm').format(datetime).toString(),
       'Department': _selectDepartment,
       'Person': _selectPerson,
     };

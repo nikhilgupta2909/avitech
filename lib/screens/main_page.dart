@@ -36,7 +36,7 @@ class _MainPage extends State<MainPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.yellow.shade300,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
@@ -51,7 +51,7 @@ class _MainPage extends State<MainPage> {
         //       height: MediaQuery.of(context).size.height,
         //       decoration: const BoxDecoration(
         //         gradient: LinearGradient(
-        //           colors: [
+        //           colors: [ 
         //             Colors.white,
         //             Colors.deepPurple,
         //           ],
@@ -96,7 +96,7 @@ class _MainPage extends State<MainPage> {
         //                           MaterialPageRoute(
         //                               builder: (context) => const LoginScreen()));
         //                       break;
-    
+
         //                     case "2. Visitor Entry":
         //                       Navigator.push(
         //                           context,

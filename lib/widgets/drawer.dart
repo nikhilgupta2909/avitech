@@ -17,7 +17,7 @@ class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: WillPopScope(
+      child: WillPopScope(  
         onWillPop: () async => false,
         child: Drawer(
           backgroundColor: Colors.white,
